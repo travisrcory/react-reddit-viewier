@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, KeyboardEvent } from "react";
 
 import axios from 'axios';
 
@@ -11,12 +11,8 @@ const App = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    function getFetchUrl() {
-      return `https://www.reddit.com/r/${sub}.json`;
-    }
-
     async function fetchData() {
-      const result = await axios(getFetchUrl())
+      const result = await axios(`https://www.reddit.com/r/${sub}.json`)
         .then(results => results.data.data.children)
         .catch(error => {
           console.error(error);
@@ -36,21 +32,21 @@ const App = () => {
     setError(false);
   }, [posts]);
 
-  const _onKeyUp = (event: any) => {
-    if (event.key == 'Enter') {
-      event.currentTarget.getAttribute('value');
+  const _onKeyUp = (event: KeyboardEvent): void => {
+    const target = event.target as HTMLInputElement;
 
-      setSub(event.target.value)
+    if (event.key == 'Enter') {
+      setSub(target.value)
     }
   }
 
   return (
     <div>
       <div className="header">
-        <input onKeyDown={e => _onKeyUp(e)} />
+        <input onKeyDown={_onKeyUp} />
       </div>
 
-      {error ? `No sub exists with the name: '${sub}', please try again` : ''}
+      {error ? `No subreddit exists with the name: '${sub}', please try again` : ''}
 
       {
         posts.length > 0 ?
