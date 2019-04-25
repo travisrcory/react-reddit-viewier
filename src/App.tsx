@@ -3,7 +3,7 @@ import React, { useState, useEffect, KeyboardEvent } from "react";
 import axios from 'axios';
 
 import "./App.css";
-import { Post } from "./components/Posts";
+import { Post } from "./components/Post";
 
 const App = () => {
   const [sub, setSub] = useState('aww');
